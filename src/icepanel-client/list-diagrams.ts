@@ -5,7 +5,7 @@ import {
   type HeaderParameters,
   type CookieParameters,
   type RequestBody,
-  type Response,
+  type SuccessfulResponse,
   pathUrlTemplate,
   queryUrlTemplate,
   operationMethod,
@@ -21,7 +21,7 @@ export async function request(
     CookieParameters,
     RequestBody
   >,
-): Promise<Response> {
+): Promise<SuccessfulResponse> {
   const response = await this.fetchFunction(
     this.makeUrl(
       pathUrlTemplate,
@@ -38,9 +38,9 @@ export async function request(
     },
   );
 
-  if (response.status !== 200) {
+  if (response.status < 200 || response.status >= 300) {
     throw createError(response.status, await response.text());
   }
 
-  return response.json() as Promise<Response>;
+  return response.json() as Promise<SuccessfulResponse>;
 }

@@ -75,6 +75,8 @@ const quicktypeJSONSchema = async (sources) => {
 // 2. All query strings are RFC 6570 expandable
 // 3. Only JSON schema is used for defining parameters, request bodies, and responses (content keyword is not used)
 // 4. The default header and cookie parameters serialization schemes are used (this implementation does not emit metadata needed for supporting other schemes)
+// 5. Each endpoint can have at most 1 successful response (status code >= 200 and < 300)
+// 6. Generated clients don't need to return typed error responses
 
 const typesDirectory = new URL("../src/icepanel-client/types", import.meta.url);
 fs.mkdirSync(typesDirectory, { recursive: true });
@@ -139,18 +141,37 @@ for (const operationId of operationIds) {
     json: operation,
   })[0];
 
-  const statusCodes = jsonPath({
-    path: "$.responses.*.content['application/json'].schema^^^~",
-    json: operation,
-  });
-  const responseBodySchemas = jsonPath({
-    path: "$.responses.*.content['application/json'].schema",
-    json: operation,
-  });
-  const responseBodySchemaPairs = statusCodes.map((statusCode, index) => ({
-    statusCode,
-    schema: responseBodySchemas[index],
-  }));
+  const statusCodes =
+    jsonPath({
+      path: "$.responses.*.content['application/json'].schema^^^~",
+      json: operation,
+    }) ?? [];
+  const responseBodySchemas =
+    jsonPath({
+      path: "$.responses.*.content['application/json'].schema",
+      json: operation,
+    }) ?? [];
+  const responseBodySchemaPairs = statusCodes
+    .map((statusCode, index) => ({
+      statusCode,
+      schema: responseBodySchemas[index],
+    }))
+    // Sort the pairs by status code but put the first status code that is >= 200 and < 300 first
+    .sort(({ statusCode: statusCodeA }, { statusCode: statusCodeB }) => {
+      if (statusCodeA >= 200 && statusCodeA < 300) {
+        return -1;
+      }
+
+      if (statusCodeB >= 200 && statusCodeB < 300) {
+        return 1;
+      }
+
+      return statusCodeA - statusCodeB;
+    });
+  const hasSuccessfulResponse =
+    responseBodySchemaPairs.length > 0 &&
+    responseBodySchemaPairs[0].statusCode >= 200 &&
+    responseBodySchemaPairs[0].statusCode < 300;
 
   const inPathParametersSource = {
     name: `${generationPrefix}PathParameters`,
@@ -235,9 +256,15 @@ for (const operationId of operationIds) {
       : undefined
   };`;
 
+  const successfulResponseTypeIdentifier = `${generationPrefix}SuccessfulResponse`;
+  const successfulResponseTypeLine = `type ${successfulResponseTypeIdentifier} = ${
+    hasSuccessfulResponse ? responseSources[0].name : "undefined"
+  };`;
+
   const names = [
     ...sources.map(({ name }) => name),
     combinedResponsesTypeIdentifier,
+    successfulResponseTypeIdentifier,
   ];
   const commaSeparatedAliases = names
     .map((name) => `${name} as ${name.slice(generationPrefix.length)}`)
@@ -276,6 +303,7 @@ for (const operationId of operationIds) {
         line.replace(/^export (type [^ ]+ = )/, "$1"),
       ),
       combinedResponsesTypeLine,
+      successfulResponseTypeLine,
       undefinedTypeLines,
       exportTypeLine,
     ].join("\n"),

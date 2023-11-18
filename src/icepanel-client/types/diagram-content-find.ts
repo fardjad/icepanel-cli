@@ -1068,6 +1068,7 @@ type OASInternalServerErrorResponse = {
 }
 
 type OASResponse = OASOkResponse | OASUnauthorizedResponse | OASNotFoundResponse | OASUnprocessableEntityResponse | OASInternalServerErrorResponse;
+type OASSuccessfulResponse = OASOkResponse;
 type OASCookieParameters = { [property: string]: any };
 type OASRequestBody = undefined;
-export type { OASPathParameters as PathParameters, OASQueryParameters as QueryParameters, OASHeaderParameters as HeaderParameters, OASCookieParameters as CookieParameters, OASRequestBody as RequestBody, OASOkResponse as OkResponse, OASUnauthorizedResponse as UnauthorizedResponse, OASNotFoundResponse as NotFoundResponse, OASUnprocessableEntityResponse as UnprocessableEntityResponse, OASInternalServerErrorResponse as InternalServerErrorResponse, OASResponse as Response };
+export type { OASPathParameters as PathParameters, OASQueryParameters as QueryParameters, OASHeaderParameters as HeaderParameters, OASCookieParameters as CookieParameters, OASRequestBody as RequestBody, OASOkResponse as OkResponse, OASUnauthorizedResponse as UnauthorizedResponse, OASNotFoundResponse as NotFoundResponse, OASUnprocessableEntityResponse as UnprocessableEntityResponse, OASInternalServerErrorResponse as InternalServerErrorResponse, OASResponse as Response, OASSuccessfulResponse as SuccessfulResponse };
