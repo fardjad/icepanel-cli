@@ -1,4 +1,4 @@
-import { icePanelClient } from "../../icepanel-client/index.ts";
+import { client } from "../../icepanel-client/index.ts";
 import { register as diagramsPlugin } from "./diagrams/index.ts";
 import * as inquirer from "@inquirer/prompts";
 import {
@@ -31,7 +31,7 @@ export const register: RegisterFunction = (commander) => {
         }),
     )
     .hook("preSubcommand", (thisCommand) => {
-      icePanelClient.baseUrl = thisCommand.getOptionValue("baseUrl") as string;
-      icePanelClient.apiKey = thisCommand.getOptionValue("apiKey") as string;
+      client.baseUrl = thisCommand.getOptionValue("baseUrl") as string;
+      client.apiKey = thisCommand.getOptionValue("apiKey") as string;
     });
 };

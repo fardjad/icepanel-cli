@@ -11,9 +11,11 @@
     "tsconfig.json"
   ],
   "scripts": {
+    "fetch-oas": "node scripts/fetch-oas.mjs",
     "fix": "npm run format",
     "format": "prettier --write . && eslint --ext .js --ext .cjs --ext .mjs --ext .ts --ext .cts --ext .mts --ext .d.ts --fix .",
-    "generate:types": "node scripts/fetch-oas.mjs && node scripts/generate-types.mjs",
+    "generate:client": "node scripts/generate-client.mjs && prettier --write src/icepanel-client",
+    "generate:types": "node scripts/generate-types.mjs",
     "lint": "prettier --check . && eslint --ext .js --ext .cjs --ext .mjs --ext .ts --ext .cts --ext .mts --ext .d.ts .",
     "pretest": "tsc",
     "test": "glob -c \"tsx --test --test-reporter spec\" \"src/**/*.test.ts\"",
@@ -52,6 +54,7 @@
     "prettier": "^3.0.3",
     "prettier-plugin-packagejson": "^2.4.6",
     "quicktype-core": "^23.0.78",
+    "templgen": "^0.1.69",
     "typescript": "^5.2.2",
     "yaml": "^2.3.4"
   }

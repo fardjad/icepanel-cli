@@ -1,4 +1,4 @@
-import { type RequestOptions, type IcePanelClient } from "./index.ts";
+import { type RequestOptions, type Client } from "./index.ts";
 import {
   type PathParameters,
   type QueryParameters,
@@ -9,11 +9,11 @@ import {
   pathUrlTemplate,
   queryUrlTemplate,
   operationMethod,
-} from "./types/diagrams-list.ts";
+} from "./types/<%- operation_filename %>.ts";
 import createError from "http-errors";
 
 export async function request(
-  this: IcePanelClient,
+  this: Client,
   requestOptions: RequestOptions<
     PathParameters,
     QueryParameters,

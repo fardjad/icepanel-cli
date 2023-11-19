@@ -1,5 +1,11 @@
-import { request as diagramContentFind } from "./diagram-content-find.ts";
-import { request as diagramsList } from "./diagrams-list.ts";
+<%
+const { kebabCase } = await import("change-case");
+%>
+
+<% for (const operationId of operationIds) { %>
+import { request as <%- operationId %> } from "./<%- kebabCase(operationId) %>.ts";
+<% } %>
+
 import { Cookie } from "tough-cookie";
 import { type Template, parseTemplate } from "url-template";
 
@@ -20,9 +26,9 @@ export type RequestOptions<
 };
 
 export class Client {
-  diagramsList = diagramsList;
-
-  diagramContentFind = diagramContentFind;
+  <% for (const operationId of operationIds) { %>
+  <%- operationId %> = <%- operationId %>;
+  <% } %>
 
   public baseUrl: string;
   public apiKey: string;

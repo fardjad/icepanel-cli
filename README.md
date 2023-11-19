@@ -9,7 +9,7 @@ icepanel --help
 
 ## Development
 
-This project uses [`tsx`][1] for running TypeScript. Therefore no build step is 
+This project uses [`tsx`][1] for running TypeScript. Therefore no build step is
 required.
 
 You can optionally link the package globally by running:
@@ -34,11 +34,11 @@ icepanel --help
 
 ### Plugins
 
-It's recommended to break up the functionality of the program into plugins. That 
+It's recommended to break up the functionality of the program into plugins. That
 makes testing and maintenance easier.
 
-At startup, the program will load TypeScript files that match the glob 
-pattern `./src/plugins/*/index.ts`. Each plugin script must export a function 
+At startup, the program will load TypeScript files that match the glob
+pattern `./src/plugins/*/index.ts`. Each plugin script must export a function
 named register with the following signature:
 
 ```typescript

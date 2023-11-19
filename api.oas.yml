@@ -17024,11 +17024,6 @@ paths:
         - diagrams
       x-eov-operation-handler: diagrams
   /landscapes/{landscapeId}/versions/{versionId}/diagrams:
-    parameters:
-      - in: query
-        name: test
-        schema:
-          type: string
     get:
       operationId: diagramsList
       parameters:

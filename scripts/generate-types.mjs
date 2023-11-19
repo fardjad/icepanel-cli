@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+import { operationIds } from "./operation-ids.mjs";
 import { kebabCase, pascalCase } from "change-case";
 import "http-status-codes";
 import { getReasonPhrase } from "http-status-codes";
@@ -77,6 +78,7 @@ const quicktypeJSONSchema = async (sources) => {
 // 4. The default header and cookie parameters serialization schemes are used (this implementation does not emit metadata needed for supporting other schemes)
 // 5. Each endpoint can have at most 1 successful response (status code >= 200 and < 300)
 // 6. Generated clients don't need to return typed error responses
+// 7. OperationIds are unique and can be used as valid TypeScript identifiers
 
 const typesDirectory = new URL("../src/icepanel-client/types", import.meta.url);
 fs.mkdirSync(typesDirectory, { recursive: true });
@@ -84,8 +86,6 @@ fs.mkdirSync(typesDirectory, { recursive: true });
 const oas = yaml.parse(
   fs.readFileSync(new URL("../api.oas.yml", import.meta.url), "utf8"),
 );
-
-const operationIds = ["diagramsList", "diagramContentFind"];
 
 // A prefix to avoid name collisions with other types
 const generationPrefix = "OAS";

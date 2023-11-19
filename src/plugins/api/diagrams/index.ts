@@ -1,4 +1,4 @@
-import { icePanelClient } from "../../../icepanel-client/index.ts";
+import { client } from "../../../icepanel-client/index.ts";
 import { landscapeId, landscapeVersion } from "../common-options.ts";
 import { type RegisterFunction } from "interactive-commander";
 
@@ -11,7 +11,7 @@ export const createAction =
     landscapeId: string;
     landscapeVersion: string;
   }) => {
-    const response = await icePanelClient.listDiagrams({
+    const response = await client.diagramsList({
       pathParameters: { landscapeId, versionId: landscapeVersion },
     });
 
