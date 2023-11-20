@@ -1,5 +1,6 @@
 import { request as diagramContentFind } from "./diagram-content-find.ts";
 import { request as diagramsList } from "./diagrams-list.ts";
+import { request as modelObjectsList } from "./model-objects-list.ts";
 import { Cookie } from "tough-cookie";
 import { type Template, parseTemplate } from "url-template";
 
@@ -24,8 +25,14 @@ export class Client {
 
   diagramContentFind = diagramContentFind;
 
+  modelObjectsList = modelObjectsList;
+
   public baseUrl: string;
   public apiKey: string;
+
+  public customQueryStringParserFunction?: (
+    queryParameters: RequestOptions["queryParameters"],
+  ) => string;
 
   public fetchFunction = async (...arguments_: Parameters<typeof fetch>) =>
     fetch(...arguments_);
@@ -39,10 +46,21 @@ export class Client {
     const parsedPathUrlTemplate = parseTemplate(pathUrlTemplate);
     const parsedQueryUrlTemplate = parseTemplate(queryUrlTemplate);
 
+    let serializedQueryParameters = this.customQueryStringParserFunction
+      ? this.customQueryStringParserFunction(queryVariables)
+      : parsedQueryUrlTemplate.expand(queryVariables);
+
+    if (
+      serializedQueryParameters.length > 0 &&
+      !serializedQueryParameters.startsWith("?")
+    ) {
+      serializedQueryParameters = `?${serializedQueryParameters}`;
+    }
+
     return new URL(
       `${this.baseUrl}${parsedPathUrlTemplate.expand(
         pathVariables,
-      )}${parsedQueryUrlTemplate.expand(queryVariables)}`,
+      )}${serializedQueryParameters}`,
     ).toString();
   }
 

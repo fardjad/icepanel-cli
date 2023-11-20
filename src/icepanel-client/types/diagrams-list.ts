@@ -5,7 +5,7 @@
 export const operationMethod = "GET";
 export const pathUrlTemplate =
   "/landscapes/{landscapeId}/versions/{versionId}/diagrams";
-export const queryUrlTemplate = "{?test,filter}";
+export const queryUrlTemplate = "{?filter}";
 
 type OASPathParameters = {
   landscapeId: string;
@@ -15,7 +15,6 @@ type OASPathParameters = {
 
 type OASQueryParameters = {
   filter?: Ter;
-  test?: string;
   [property: string]: any;
 };
 

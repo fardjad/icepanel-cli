@@ -47,3 +47,11 @@ named register with the following signature:
 ```
 
 [1]: https://github.com/esbuild-kit/tsx
+
+## Recipes
+
+### List the name of the internal apps without an owner (requires jq):
+
+```sh
+icepanel objects | jq 'map(select((.teamIds | length == 0) and (.type == "app") and (.external == false))) | .[].name'
+```

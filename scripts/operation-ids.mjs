@@ -1,1 +1,5 @@
-export const operationIds = ["diagramsList", "diagramContentFind"];
+export const operationIds = [
+  "diagramsList",
+  "diagramContentFind",
+  "modelObjectsList",
+];
