@@ -5,6 +5,11 @@
 This project has no affiliation with **IcePanel Technologies Inc.** I built
 it to make my job easier.
 
+### Requirements
+
+1. Node.js >= 20
+2. Unix-based OS (Linux, macOS, WSL, etc.)
+
 ## Installation
 
 _Note: This project is in early development stage and is not published to npm yet._
