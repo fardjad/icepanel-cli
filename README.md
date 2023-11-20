@@ -1,56 +1,39 @@
-# icepanel-bot
+# icepanel-cli
+
+> Unofficial CLI tool for [IcePanel](https://icepanel.io/).
+
+This project has no affiliation with **IcePanel Technologies Inc.** I built
+it to make my job easier.
 
 ## Installation
 
-```bash
-npm install -g icepanel-bot
-icepanel --help
-```
+_Note: This project is in early development stage and is not published to npm yet._
 
-## Development
-
-This project uses [`tsx`][1] for running TypeScript. Therefore no build step is
-required.
-
-You can optionally link the package globally by running:
-
-```bash
+```sh
+git clone https://github.com/fardjad/icepanel-cli.git
 npm link
 ```
 
-Then you can run the program from anywhere with:
+## Usage
 
-```bash
-icepanel --help
+It's recommended to add the following two variables to your environment:
+
+- `ICEPANEL_API_KEY`
+- `ICEPANEL_LANDSCAPE_ID`
+
+Then you can run `icepanel --help` and follow the usage prompts.
+
+## Examples
+
+_Note: Some of these examples use [jq](https://jqlang.github.io/jq/) for filtering the output._
+
+### List all diagrams:
+
+```sh
+icepanel diagrams
 ```
 
-### NPM Scripts
-
-- `format` - Formats the code and fixes linting errors.
-- `fix` - An alias for `format`.
-- `lint` - Lints the code and checks the style.
-- `test` - Runs the tests.
-- `test:coverage` - Runs the tests and generates a coverage report.
-
-### Plugins
-
-It's recommended to break up the functionality of the program into plugins. That
-makes testing and maintenance easier.
-
-At startup, the program will load TypeScript files that match the glob
-pattern `./src/plugins/*/index.ts`. Each plugin script must export a function
-named register with the following signature:
-
-```typescript
-// The following type is also exported as `RegisterFunction` from the `interactive-commander` package.
-(command: InteractiveCommand) => Promise<void> | void
-```
-
-[1]: https://github.com/esbuild-kit/tsx
-
-## Recipes
-
-### List the name of the internal apps without an owner (requires jq):
+### List the name of all internal apps without an owner:
 
 ```sh
 icepanel objects | jq 'map(select((.teamIds | length == 0) and (.type == "app") and (.external == false))) | .[].name'

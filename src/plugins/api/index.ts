@@ -38,11 +38,5 @@ export const register: RegisterFunction = (commander) => {
       client.apiKey = thisCommand.getOptionValue("apiKey") as string;
       client.customQueryStringParserFunction = (queryParameters) =>
         qs.stringify(queryParameters, { encode: false, arrayFormat: "comma" });
-
-      client.fetchFunction = async (input, init) => {
-        console.error(`${init?.method ?? "GET"}: ${String(input)}`);
-
-        return fetch(input, init);
-      };
     });
 };
