@@ -33,6 +33,12 @@ _Note: Some of these examples use [jq](https://jqlang.github.io/jq/) for filteri
 icepanel diagrams
 ```
 
+### Run in interactive mode (asks for values of missing options):
+
+```sh
+icepanel --interactive objects
+```
+
 ### List the name of all internal apps without an owner:
 
 ```sh

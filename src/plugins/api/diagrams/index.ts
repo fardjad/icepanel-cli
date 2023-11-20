@@ -15,7 +15,9 @@ export const createAction =
       pathParameters: { landscapeId, versionId: landscapeVersion },
     });
 
-    log(JSON.stringify(response, undefined, 2));
+    const { diagrams } = response;
+
+    log(JSON.stringify(diagrams, undefined, 2));
   };
 
 export const register: RegisterFunction = (commander) => {
